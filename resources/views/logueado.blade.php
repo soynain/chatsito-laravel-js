@@ -27,7 +27,7 @@
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand text-white">Crud Productos</a>
-
+            <a href="{{route('close-session')}}" class="nav-item">Cerrar sesión</a>
         </div>
     </nav>
 

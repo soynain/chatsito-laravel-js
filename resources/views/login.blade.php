@@ -42,9 +42,7 @@
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Iniciar sesión</button>
             </div>
-            @if($errors-has('contra'))
-                <div class="text-bg-danger p-3 mt-3">{{errors->first('contra')}}</div>
-            @endif
+            <div class="text-bg-danger p-3 mt-3">Revise que sus credenciales estén correctas</div>
         </form>
     </div>
 

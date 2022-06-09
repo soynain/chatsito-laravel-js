@@ -20,10 +20,13 @@ class AuthBasicMiddle
     public function handle(Request $request, Closure $next)
     {
         /*si lo cambias al else default, por alguna razon mágica no funciona jajaja*/ 
-        if(!Auth::check()){
-            return redirect()->route('login-form');
-        }else if(Auth::check()){
+
+        /*otra cosa importante, si ejecutas el server, y no cierras la sesión
+        de alguna manera la sesión queda persistida en memoria, debes cerrarla*/
+        if(Auth::check()){
             return $next($request);
+        }else if(!Auth::check()){
+            return redirect()->route('login-form');
         }
     }
 }
