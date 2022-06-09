@@ -60,15 +60,15 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+   //     'users' => [
+    //        'driver' => 'eloquent',
+     //       'model' => App\Models\User::class,
+      //  ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+         'users' => [
+             'driver' => 'database',
+             'table' => 'alta_producto',
+         ] 
     ],
 
     /*
@@ -89,7 +89,7 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_resets',
+            'table' => 'alta_producto',
             'expire' => 60,
             'throttle' => 60,
         ],

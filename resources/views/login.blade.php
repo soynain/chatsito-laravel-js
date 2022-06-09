@@ -36,13 +36,15 @@
             @csrf
 
             <label for="usuarioInput" class="form-label">Nombre de usuario: </label>
-            <input name="us_vbl" type="text" class="form-control mb-3" id="usuarioInput" placeholder="Ingresa aquí tu usuario">
+            <input name="usuario" type="text" class="form-control mb-3" id="usuarioInput" placeholder="Ingresa aquí tu usuario">
             <label for="contraInput" class="form-label">Contraseña: </label>
-            <input name="pss_vbl" type="password" class="form-control mb-3" id="contraInput" placeholder="Ingresa aquí tu contraseña">
+            <input name="contra" type="password" class="form-control mb-3" id="contraInput" placeholder="Ingresa aquí tu contraseña">
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Iniciar sesión</button>
             </div>
-            <div class="text-bg-danger p-3 mt-3">Revise que sus credenciales estén correctas</div>
+            @if($errors-has('contra'))
+                <div class="text-bg-danger p-3 mt-3">{{errors->first('contra')}}</div>
+            @endif
         </form>
     </div>
 

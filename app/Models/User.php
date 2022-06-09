@@ -18,9 +18,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-  //      'name',
-        'us_vbl',
-        'pss_vbl',
+        'usuario',
+        'contra',
     ];
 
     /**
@@ -29,7 +28,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'pss_vbl',
+        'contra',
         'remember_token',
     ];
 
@@ -41,4 +40,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function getAuthPassword () {
+
+        return $this->contra;
+    
+    }
 }
