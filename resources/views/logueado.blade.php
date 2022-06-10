@@ -20,14 +20,15 @@
             display: none;
         }
     </style>
-    <title>Inicio sesiósn</title>
+    <title>Panel principal</title>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand text-white">Crud Productos</a>
-            <a href="{{route('close-session')}}" class="nav-item">Cerrar sesión</a>
+            <a href="{{route('close-session')}}" class="nav-item text-white">Cerrar sesión</a>
+            <a href="{{url('/chat/home')}}" class="nav-item text-white">Probar el prefix</a>
         </div>
     </nav>
 

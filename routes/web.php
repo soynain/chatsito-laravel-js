@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 
-//Route::prefix('/chat')->group(__DIR__.'/routes/chatroutes/chatroutes.php');
+Route::prefix('/chat')->group(__DIR__.'\rutasChat\rutasChat.php');
 
 Route::get('/', function () {
     return view('login');
