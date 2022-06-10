@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'auth.basic.once'=>\Illuminate\Foundation\Http\Middleware\AuthBasicMiddle::class
+        'auth.basic.once'=>\Illuminate\Foundation\Http\Middleware\AuthBasicMiddle::class,
+        'no.login.while.logged.in'=>\Illuminate\Foundation\Http\Middleware\LoginFormNoAccessIfAuth::class
     ];
 }

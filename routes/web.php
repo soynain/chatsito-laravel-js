@@ -3,6 +3,7 @@
 use App\Http\Controllers\ControladorLogin;
 use App\Http\Middleware\AuthBasicMiddle;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\LoginFormNoAccessIfAuth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,18 +14,21 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('login');
-})->name('login-form');
+})->middleware(LoginFormNoAccessIfAuth::class)
+    ->name('login-form');
 
-Route::post('/login', [ControladorLogin::class,'authenticate'])->name('login.auth');
+Route::post('/login', [ControladorLogin::class, 'authenticate'])->name('login.auth');
 
-Route::get('/logueado',function(){
+Route::get('/panel-principal', function () {
     Log::info(Auth::check());
     return view('logueado');
-})->middleware(AuthBasicMiddle::class);
+})->middleware(AuthBasicMiddle::class)
+    ->name('panel-principal');
 
-Route::get('/logout',function(Request $request){
+Route::get('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
     return redirect()->route('login-form');
-})->middleware(AuthBasicMiddle::class)->name('close-session');
+})->middleware(AuthBasicMiddle::class)
+    ->name('close-session');
