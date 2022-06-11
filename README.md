@@ -18,6 +18,6 @@ No planeo añadir más caracteristicas complejas por flojera, y porque tampoco s
 Usaré MYSQL para la base de datos, nada fuera de lo común, se que es común usar NoSQL (mongo)
 para tales cuestiones pero quiero practicar mis habilidades de maquetado también. Y también
 ya hasta se me olvidó como usar mongo por guebon.
+[![laravelchatbdd-V2.png](https://i.postimg.cc/k5FsBf27/laravelchatbdd-V2.png)](https://postimg.cc/5HyLr55r)
 
-<p align="center"><a href="" target="_blank"><img src="https://postimg.cc/5HyLr55r" ></a></p>
 
