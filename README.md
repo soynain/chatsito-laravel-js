@@ -19,5 +19,5 @@ Usaré MYSQL para la base de datos, nada fuera de lo común, se que es común us
 para tales cuestiones pero quiero practicar mis habilidades de maquetado también. Y también
 ya hasta se me olvidó como usar mongo por guebon.
 
-<p align="center"><a href="" target="_blank"><img src="/example-app/resources/images/laravelchatbdd-V2.png" ></a></p>
+<p align="center"><a href="" target="_blank"><img src="https://postimg.cc/5HyLr55r" ></a></p>
 
