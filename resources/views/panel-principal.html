@@ -45,6 +45,16 @@
             color: blue;
         }
 
+        .notification-icon {
+            width: 25px;
+            height: 25px;
+        }
+
+        .notification-box {
+            left: 18%;
+            z-index: 1;
+        }
+
         /*media query para XSMALL, boostrap no tiene tag para este*/
         @media (max-width:575px) {
             .list-group {
@@ -71,7 +81,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="d-flex flex-row align-items-center navbar-nav navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Mi perfil</a>
                     </li>
@@ -81,6 +91,12 @@
                     <li class="nav-item d-lg-none d-md-none d-sm-block">
                         <a class="nav-link text-white" href="#">Ver chats</a>
                     </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                            aria-controls="collapseExample"><img class="notification-icon"
+                                src="../images/notification_received.png">
+                        </a>
+                    </li>
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-2 me-2" type="search" placeholder="Buscar un perfil..."
@@ -88,9 +104,38 @@
                     <button class="btn btn-success" type="submit">Buscar</button>
                 </form>
             </div>
-
         </div>
     </nav>
+
+    <div class="collapse position-absolute w-25 notification-box" id="collapseExample">
+        <div class="card card-body filas-notificacion">
+            <div class="card filas">
+                <div class="card-body">
+                    <p class="card-text">
+                        <span class="text-wrap text-break"><b>Nombre de usuario</b> quiere ser tu amigo</span>
+                    </p>
+                    <d class="buttons">
+                        <button class="btn btn-success">Aceptar</button>
+                        <button class="btn btn-danger">Rechazar</button>
+                    </d>
+                </div>
+            </div>
+        </div>
+        <div class="card card-body filas-notificacion">
+            <div class="card filas">
+                <div class="card-body">
+                    <p class="card-text">
+                        <span class="text-wrap text-break"><b>Nombre de usuario</b> quiere ser tu amigo</span>
+                    </p>
+                    <d class="buttons">
+                        <button class="btn btn-success">Aceptar</button>
+                        <button class="btn btn-danger">Rechazar</button>
+                    </d>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="d-flex flex-row w-100" style="height: 91.5vh;">
         <div class="container-chat-collapser d-sm-none d-md-flex d-lg-flex flex-column-reverse w-25">

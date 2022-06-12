@@ -11,12 +11,21 @@
     <style>
         .cont-principal {
             height: 91.5vh;
-            border: 2px solid black;
         }
 
         .icon-friend-status {
             width: 18px;
             height: 18px;
+        }
+
+        .notification-icon {
+            width: 25px;
+            height: 25px;
+        }
+
+        .notification-box {
+            left: 18%;
+            z-index: 1;
         }
     </style>
 </head>
@@ -31,7 +40,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="d-flex flex-row align-items-center navbar-nav navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Mi perfil</a>
                     </li>
@@ -40,6 +49,12 @@
                     </li>
                     <li class="nav-item d-lg-none d-md-none d-sm-block">
                         <a class="nav-link text-white" href="#">Ver chats</a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                            aria-controls="collapseExample"><img class="notification-icon"
+                                src="../images/notification_received.png">
+                        </a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -50,6 +65,35 @@
             </div>
         </div>
     </nav>
+
+    <div class="collapse position-absolute w-25 notification-box" id="collapseExample">
+        <div class="card card-body filas-notificacion">
+            <div class="card filas">
+                <div class="card-body">
+                    <p class="card-text">
+                        <span class="text-wrap text-break"><b>Nombre de usuario</b> quiere ser tu amigo</span>
+                    </p>
+                    <d class="buttons">
+                        <button class="btn btn-success">Aceptar</button>
+                        <button class="btn btn-danger">Rechazar</button>
+                    </d>
+                </div>
+            </div>
+        </div>
+        <div class="card card-body filas-notificacion">
+            <div class="card filas">
+                <div class="card-body">
+                    <p class="card-text">
+                        <span class="text-wrap text-break"><b>Nombre de usuario</b> quiere ser tu amigo</span>
+                    </p>
+                    <d class="buttons">
+                        <button class="btn btn-success">Aceptar</button>
+                        <button class="btn btn-danger">Rechazar</button>
+                    </d>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container-fluid d-flex justify-content-center align-items-center cont-principal">
         <div class="card w-50">
