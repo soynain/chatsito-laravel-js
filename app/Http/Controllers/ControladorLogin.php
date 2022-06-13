@@ -23,8 +23,6 @@ class ControladorLogin extends Controller
         con bcrypt, si no aun asi este bien, te redirigiria al index.*/
         if (Auth::attempt(['usuario' => $request->usuario, 'password' => $request->contra])) {
             $request->session()->regenerate();
-            //  $request->session()->passwordConfirmed();
-          
             return redirect()->intended('/v1/panel-principal');
         } else {
             Log::info(Auth::check());
