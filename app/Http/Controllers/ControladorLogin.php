@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-//use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use function PHPUnit\Framework\isEmpty;
 
 class ControladorLogin extends Controller
 {
@@ -16,7 +14,7 @@ class ControladorLogin extends Controller
             'usuario' => ['required'],
             'contra' => ['required'],
         ]);
-        Log::info($credentials);
+        //  Log::info($credentials);
         Log::info(Auth::check());
 
         /*por como entiendo, al usar auth, una columna de tu bdd forzosamente
@@ -25,8 +23,11 @@ class ControladorLogin extends Controller
         con bcrypt, si no aun asi este bien, te redirigiria al index.*/
         if (Auth::attempt(['usuario' => $request->usuario, 'password' => $request->contra])) {
             $request->session()->regenerate();
-            return  redirect()->intended('panel-principal');
+            //  $request->session()->passwordConfirmed();
+          
+            return redirect()->intended('/v1/panel-principal');
         } else {
+            Log::info(Auth::check());
             return back()
                 ->withErrors(['contra' => 'Revise que sus credenciales estén correctas'])
                 ->onlyInput('contra');

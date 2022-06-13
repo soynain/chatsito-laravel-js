@@ -67,7 +67,7 @@ return [
 
          'users' => [
              'driver' => 'database',
-             'table' => 'alta_producto',
+             'table' => 'usuarioscredenciales',
          ] 
     ],
 
@@ -89,7 +89,7 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'alta_producto',
+            'table' => 'usuarioscredenciales',
             'expire' => 60,
             'throttle' => 60,
         ],

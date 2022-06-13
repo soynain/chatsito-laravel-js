@@ -106,7 +106,7 @@
             </div>
         </div>
     </nav>
-
+   {{$contactoschatvar}}
     <div class="collapse position-absolute w-25 notification-box" id="collapseExample">
         <div class="card card-body filas-notificacion">
             <div class="card filas">
