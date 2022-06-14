@@ -5,38 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>Nombre completo del perfil</title>
-    <style>
-        .cont-principal {
-            height: 91.5vh;
-        }
 
-        .icon-friend-status {
-            width: 18px;
-            height: 18px;
-        }
-
-        .notification-icon {
-            width: 25px;
-            height: 25px;
-        }
-
-        .notification-box {
-            left: 18%;
-            z-index: 1;
-        }
-    </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg bg-primary ps-4 pe-4">
         <div class="container-fluid">
             <a href="#" class="navbar-brand text-white">Chat en laravel</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -51,15 +30,12 @@
                         <a class="nav-link text-white" href="#">Ver chats</a>
                     </li>
                     <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-                            aria-controls="collapseExample"><img class="notification-icon"
-                                src="../images/notification_received.png">
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><img class="notification-icon" src="../images/notification_received.png">
                         </a>
                     </li>
                 </ul>
                 <form class="d-flex">
-                    <input class="form-control me-2 me-2" type="search" placeholder="Buscar un perfil..."
-                        aria-label="Search">
+                    <input class="form-control me-2 me-2" type="search" placeholder="Buscar un perfil..." aria-label="Search">
                     <button class="btn btn-success" type="submit">Buscar</button>
                 </form>
             </div>
@@ -99,8 +75,7 @@
         <div class="card w-50">
             <div class="card-header d-flex flex-row justify-content-between align-items-center">
                 <h5>Perfil</h5>
-                <a class="d-flex flex-row justify-content-between align-items-center text-white btn btn-success"
-                    href="/enviar-solicitud">
+                <a class="d-flex flex-row justify-content-between align-items-center text-white btn btn-success" href="/enviar-solicitud">
                     <img class="icon-friend-status me-1" src="../images/add-friend.png">
                     Enviar solicitud de amistad
                 </a>
@@ -138,9 +113,7 @@
         </div>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 </body>
 
 </html>

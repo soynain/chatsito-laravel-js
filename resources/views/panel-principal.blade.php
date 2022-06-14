@@ -5,70 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
-    <style>
-        .online-circle {
-            width: 12px;
-            height: 12px;
-            border-radius: 100%;
-            background-color: green;
-            display: inline-block;
-        }
-
-        .offline-circle {
-            width: 12px;
-            height: 12px;
-            border-radius: 100%;
-            background-color: gray;
-            display: inline-block;
-        }
-
-        .toggler-chat {
-            border: 0.1px solid gray;
-            border-top-left-radius: 7px;
-            border-top-right-radius: 7px;
-            height: 35px;
-            background-image: linear-gradient(180deg, white, gray);
-            cursor: pointer;
-        }
-
-        .list-group-item:hover span {
-            display: none;
-        }
-
-        /*antes de aplicar el hover de arriba, remplaza el texto*/
-        .list-group-item:hover::before {
-            content: "Enviar mensaje";
-            line-height: initial;
-            color: blue;
-        }
-
-        .notification-icon {
-            width: 25px;
-            height: 25px;
-        }
-
-        .notification-box {
-            left: 18%;
-            z-index: 1;
-        }
-
-        /*media query para XSMALL, boostrap no tiene tag para este*/
-        @media (max-width:575px) {
-            .list-group {
-                display: none;
-            }
-
-            .toggler-chat {
-                display: none;
-            }
-
-            .container-chat-collapser {
-                display: none;
-            }
-        }
-    </style>
     <title>Panel principal</title>
 </head>
 
@@ -91,7 +29,7 @@
                         <a class="nav-link text-white" href="#">Ver chats</a>
                     </li>
                     <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><img class="notification-icon" src="../images/notification_received.png">
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><img class="notification-icon" src="{{asset('img/notification_received.png')}}">
                         </a>
                     </li>
                 </ul>
@@ -137,7 +75,7 @@
         <div class="container-chat-collapser d-sm-none d-md-flex d-lg-flex flex-column-reverse w-25">
             <div onclick="mostrarContactos()" class="toggler-chat d-flex flex-row justify-content-between align-items-center w-100 p-2">
                 <span class="contacts-label">Contactos</span>
-                <img src="../images/upload.png" style="width:20px; height:20px;">
+                <img src="{{asset('img/upload.png')}}" style="width:20px; height:20px;">
             </div>
             <div class="list-group w-100 overflow-auto">
                 @foreach($contactoschatvar as $fila)
@@ -159,7 +97,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
-    <script src="../js/contact-toggler.js"></script>
+    <script src="{{asset('js/contact-toggler.js')}}"></script>
 </body>
 
 </html>

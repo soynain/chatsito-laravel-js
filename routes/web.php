@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ControladorLogin;
 use App\Http\Controllers\LogoutController;
-use App\Http\Controllers\WSocketHandlerController;
+use App\WSocketHandlerController;
 use App\Http\Middleware\AuthBasicMiddle;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginFormNoAccessIfAuth;
