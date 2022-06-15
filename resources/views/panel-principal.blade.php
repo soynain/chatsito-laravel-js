@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <title>Panel principal</title>
@@ -70,7 +71,6 @@
         </div>
     </div>
 
-
     <div class="d-flex flex-row w-100" style="height: 91.5vh;">
         <div class="container-chat-collapser d-sm-none d-md-flex d-lg-flex flex-column-reverse w-25">
             <div onclick="mostrarContactos()" class="toggler-chat d-flex flex-row justify-content-between align-items-center w-100 p-2">
@@ -98,6 +98,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
     <script src="{{asset('js/contact-toggler.js')}}"></script>
+    <script src="{{asset('js/app.js')}}"></script>
+    <script type="text/javascript">
+        window.Echo.channel('tablon').listen('ActivarStatusConexion', function(e) {
+            console.log(e);
+        })
+
+
+        async function dispararEvento() {
+            const response = await fetch('/consulta-conectados', {
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN':  window.axios.defaults.headers.common['X-CSRF-TOKEN'] 
+                }
+            })
+        }
+        dispararEvento();
+    </script>
+
 </body>
 
 </html>

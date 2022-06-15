@@ -18,4 +18,4 @@ Route::get('/', function () {return view('login');})->middleware(LoginFormNoAcce
 
 Route::post('/login', [ControladorLogin::class, 'authenticate'])->name('login.auth');
 Route::get('/logout', [LogoutController::class, 'closeSession'])->middleware(AuthBasicMiddle::class)->name('close-session');
-WebSocketsRouter::webSocket('/my-websocket', WSocketHandlerController::class);
+//WebSocketsRouter::webSocket('/my-websocket', WSocketHandlerController::class);

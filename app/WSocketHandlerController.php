@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Events\ActivarStatusConexion;
+use Illuminate\Support\Facades\Auth;
 use Ratchet\ConnectionInterface;
 use Ratchet\RFC6455\Messaging\MessageInterface;
 use Ratchet\WebSocket\MessageComponentInterface;
@@ -28,9 +30,13 @@ class WSocketHandlerController implements MessageComponentInterface
         $connection->socketId = $socketId;
         $connection->app = new \stdClass();
         $connection->app->id = 'my_app';
+        /*en el arreglo recuperaremos con el socket id el nombre de usuario*/
+    //    Log::info(session('usuario'));
+        $this->users[$connection->socketId]=session('usuario');
         $this->clients->attach($connection);
+        event(new \App\Events\ActivarStatusConexion());
     }
-    
+
     public function onClose(ConnectionInterface $connection)
     {
         // TODO: Implement onClose() method.
@@ -46,18 +52,23 @@ class WSocketHandlerController implements MessageComponentInterface
         /* se realiza una consulta sql y esta es enviada al front
         y por medio del array de conexiones, podemos buscar
         varios o un usuario en particular*/
-        $consulta=DB::select('select * from usuarios;');
-       // Log::info($consulta);
         $numRecv = count($this->clients);
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $connection->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+        echo sprintf(
+            'Connection %d sending message "%s" to %d other connection%s' . "\n",
+            $connection->resourceId,
+            $msg,
+            $numRecv,
+            $numRecv == 1 ? '' : 's'
+        );
+
 
         foreach ($this->clients as $client) {
             if ($connection !== $client) {
                 // The sender is not the receiver, send to each client connected
-                $client->send(json_encode($consulta));
+                $client->send(json_encode(
+                    DB::select('select * from usuarioscredenciales where usuario=?',[session('usuario')])
+                ));
             }
         }
-
     }
 }
