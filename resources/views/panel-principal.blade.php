@@ -79,9 +79,9 @@
             </div>
             <div class="list-group w-100 overflow-auto">
                 @foreach($contactoschatvar as $fila)
-                <a href="#" class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="#" class="list-group-item d-flex justify-content-between align-items-center amigoscont">
                     <span class="text-wrap text-break hover-send-msg">{{$fila->amigosAQuienesMandeSoli}}</span>
-                    <div class="online-circle"></div>
+                    <div class="offline-circle"></div>
                 </a>
                 @endforeach
             </div>
@@ -100,20 +100,62 @@
     <script src="{{asset('js/contact-toggler.js')}}"></script>
     <script src="{{asset('js/app.js')}}"></script>
     <script type="text/javascript">
-        window.Echo.channel('tablon').listen('ActivarStatusConexion', function(e) {
-            console.log(e);
+        let miUsuario = "{{Auth::user()->usuario}}"
+        let filaamigochat = document.body.querySelectorAll(".amigoscont");
+        let arregloNombresAmigos = "<?php
+                                    foreach ($contactoschatvar as $fila) {
+                                        echo (string)$fila->amigosAQuienesMandeSoli . ",";
+                                    }
+                                    ?>".split(",");
+        //console.log(arregloNombresAmigos);
+        window.Echo.join(`tablon.1234`).here((usuarios) => {
+     //       console.log(usuarios[0], " yo estoy aqui")
+            for (let i = 0; i < usuarios.length; i++) {
+                /*si los usuarios que ya estan en la sala son mis amigos, entran al sig for */
+                if (arregloNombresAmigos.includes(usuarios[i])) {
+                    for (let index = 0; index < filaamigochat.length; index++) {
+                        //console.log(filaamigochat[index].firstElementChild.textContent, " for de divs", usuarios[i], " comparador")
+                        /*si el texto de un nodo htmo corresponde con el elemento del for principal, el amigo esta online*/
+                        if (filaamigochat[index].firstElementChild.textContent === usuarios[i]) {
+                            filaamigochat[index].lastElementChild.setAttribute('class', 'online-circle')
+                            break;
+                        }
+                    }
+                }
+            }
+        }).leaving((usuario) => {
+     //       console.log(usuario, " dejando")
+            for (let index = 0; index < filaamigochat.length; index++) {
+                console.log(filaamigochat[index].firstElementChild.textContent)
+                if (filaamigochat[index].firstElementChild.textContent === usuario) {
+                    filaamigochat[index].lastElementChild.setAttribute('class', 'offline-circle')
+                    break;
+                }
+            }
+        }).joining((usuario) => {
+    //        console.log(usuario, " uniendome")
+            if (arregloNombresAmigos.includes(usuario)) {
+                for (let index = 0; index < filaamigochat.length; index++) {
+                    console.log(filaamigochat[index].firstElementChild.textContent)
+                    if (filaamigochat[index].firstElementChild.textContent === usuario) {
+                        filaamigochat[index].lastElementChild.setAttribute('class', 'online-circle')
+                        break
+                    }
+                }
+            }
         })
 
 
-        async function dispararEvento() {
-            const response = await fetch('/consulta-conectados', {
-                method: 'post',
-                headers: {
-                    'X-CSRF-TOKEN':  window.axios.defaults.headers.common['X-CSRF-TOKEN'] 
-                }
-            })
-        }
-        dispararEvento();
+        /*   async function dispararEvento() {
+               const response = await fetch('/v1/consulta-conectados', {
+                   method: 'post',
+                   headers: {
+                       'X-CSRF-TOKEN': window.axios.defaults.headers.common['X-CSRF-TOKEN']
+                   }
+               })
+
+           }
+           dispararEvento();*/
     </script>
 
 </body>

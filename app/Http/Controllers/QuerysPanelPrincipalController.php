@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Event;
 class QuerysPanelPrincipalController extends Controller
 {
     public function consultasPanelPrincipal(){
-        Log::info(Auth::check());
         $usuario=Auth::user()->usuario;
         $contactoschatvar = DB::select('SELECT usuarioamigo.usuario AS amigosAQuienesMandeSoli FROM usuarios AS usuarioPropio INNER JOIN 
         usuarioscredenciales AS credencialesext ON usuarioPropio.idUsuario=credencialesext.id

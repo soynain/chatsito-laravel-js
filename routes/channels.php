@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Prophecy\Util\StringUtil;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +17,13 @@ use Illuminate\Support\Facades\Log;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
-/*Broadcast::channel('tablon', function ($user, $id) {
+/*Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });*/
+Broadcast::channel('tablon.{id}', function ($user,$usuario) {
+    $nombreamigo=Auth::user()->usuario;
+    /*al unirse, el broadcast encola la variable en laravel echo con los
+    demas usuarios*/
+    return $nombreamigo;
+});
 
