@@ -14,7 +14,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-primary ps-4 pe-4">
         <div class="container-fluid">
-            <a href="#" class="navbar-brand text-white">Chat en laravel</a>
+            <a href="/v1/panel-principal" class="navbar-brand text-white">Chat en laravel</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -24,7 +24,7 @@
                         <a class="nav-link text-white" href="#">Mi perfil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Cerrar sesión</a>
+                        <a class="nav-link text-white" href="{{route('close-session')}}">Cerrar sesión</a>
                     </li>
                     <li class="nav-item d-lg-none d-md-none d-sm-block">
                         <a class="nav-link text-white" href="#">Ver chats</a>
@@ -79,7 +79,7 @@
             </div>
             <div class="list-group w-100 overflow-auto">
                 @foreach($contactoschatvar as $fila)
-                <a href="#" class="list-group-item d-flex justify-content-between align-items-center amigoscont">
+                <a href="/v1/chat/{{$fila->amigosAQuienesMandeSoli}}" class="list-group-item d-flex justify-content-between align-items-center amigoscont">
                     <span class="text-wrap text-break hover-send-msg">{{$fila->amigosAQuienesMandeSoli}}</span>
                     <div class="offline-circle"></div>
                 </a>
@@ -145,17 +145,6 @@
             }
         })
 
-
-        /*   async function dispararEvento() {
-               const response = await fetch('/v1/consulta-conectados', {
-                   method: 'post',
-                   headers: {
-                       'X-CSRF-TOKEN': window.axios.defaults.headers.common['X-CSRF-TOKEN']
-                   }
-               })
-
-           }
-           dispararEvento();*/
     </script>
 
 </body>

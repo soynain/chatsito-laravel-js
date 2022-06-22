@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>Chat con {username}</title>
@@ -13,7 +14,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-primary ps-4 pe-4">
         <div class="container-fluid">
-            <a href="#" class="navbar-brand text-white">Chat en laravel</a>
+            <a href="/v1/panel-principal" class="navbar-brand text-white">Chat en laravel</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -29,7 +30,7 @@
                         <a class="nav-link text-white" href="#">Ver chats</a>
                     </li>
                     <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><img class="notification-icon" src="../images/notification_received.png">
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><img class="notification-icon" src="{{asset('img/notification_received.png')}}">
                         </a>
                     </li>
                 </ul>
@@ -66,23 +67,36 @@
         </div>
     </div>
     <div class="chat-view-main d-flex flex-column justify-content-between align-items-center">
-        <div class="messages-container w-100">
-            <div class="d-flex flex-row w-100 justify-content-start p-2 left-bubble">
-                <div class="card w-50 ms-3">
-                    <div class="card-body">
-                        <p class="card-text text-wrap text-break">With supporting text below as a natural
-                            lead-in to additional content.</p>
-                    </div>
-                </div>
+        <div class="w-100 p-3 destinatario-box d-flex flex-row justify-content-between align-items-center">
+            <span class="d-flex align items-center card-text">{{$mensajesdetalleslista[0]->destinatario}}</span>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="d-flex justify-content-center align-items-center me-1 card-text">En línea</span>
+                <div class="online-circle"></div>
             </div>
-            <div class="d-flex flex-row w-100 justify-content-end p-2 right-bubble">
-                <div class="card w-50 me-3 bubble-style">
-                    <div class="card-body">
-                        <p class="card-text text-white text-wrap text-break">With supporting text below as a natural
-                            lead-in to
-                            additional content.</p>
+        </div>
+        <div class="messages-container w-100 h-100" style="overflow: auto;scroll-snap-align: end;">
+            <div class="scroll-chat">
+                @foreach($mensajesdetalleslista as $lista)
+                @if($lista->remitente==Auth::user()->usuario)
+                <div class="d-flex flex-row w-100 justify-content-end p-2 right-bubble">
+                    <div class="card w-50 me-3 bubble-style">
+                        <div class="card-body">
+                            <p class="card-text text-white text-wrap text-break">{{$lista->mensaje}}</p>
+                        </div>
                     </div>
                 </div>
+                @else
+                <div class="d-flex flex-row w-100 justify-content-start p-2 left-bubble">
+                    <div class="card w-50 ms-3">
+                        <div class="card-body">
+                            <p class="card-text text-wrap text-break">{{$lista->mensaje}}</p>
+                        </div>
+                    </div>
+                </div>
+                @endif
+                @endforeach
+
+
             </div>
         </div>
         <div class="d-flex flex-row send-msg-container w-100 card">
@@ -96,7 +110,13 @@
             </div>
         </div>
     </div>
-
+    <script src="{{asset('js/app.js')}}"></script>
+    <script>
+        let idSala='{{$mensajesdetalleslista[0]->idConversaciones}}'
+        window.Echo.private(`ChatListener.${idSala}`).listen('ChatSupervisor',(e)=>{
+            console.log(e);
+        });
+    </script>
 </body>
 
 </html>

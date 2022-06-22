@@ -15,7 +15,7 @@ class ControladorLogin extends Controller
             'contra' => ['required'],
         ]);
         //  Log::info($credentials);
-        Log::info(Auth::check());
+       // Log::info(Auth::check());
 
         /*por como entiendo, al usar auth, una columna de tu bdd forzosamente
         debe llamarse "password", y no solo eso, al tratar de hacer
