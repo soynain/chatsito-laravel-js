@@ -13,6 +13,10 @@ class OpenChatController extends Controller
         //Log::info($destinatario);
         if ($destinatario !== null) {
             $remitente = Auth::user()->usuario;
+            /*Consulta para extraer el nombre de usuario del remitente y destinatario, asi
+            como sus id's y mensajes, lo hice asi porque te ahorras el tener que almacenar
+            constantemente el nombre de usuario varias veces por fila, entonces solo almacenas
+            el foreign key que es un entero de tamaño menor a un char*/
             $listamensajes = DB::select('SELECT usuarioremitente.usuario AS remitente,
             usuariodestinatario.usuario AS destinatario,mensajes.mensaje,mensajes.fechaHoraEnvio,
             amigosconversaciones.idConversaciones,usuarioremitente.id AS idRemitente,

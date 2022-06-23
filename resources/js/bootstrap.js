@@ -41,6 +41,7 @@ window.Echo = new Echo({
     disableStats: true
 });
 
-console.log(window.Echo.socketId,' pruebita');
-window.axios.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId();
+
+/*console.log(window.Echo.socketId(),' pruebita');
+window.axios.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId();*/
 

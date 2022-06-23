@@ -100,22 +100,24 @@
     <script src="{{asset('js/contact-toggler.js')}}"></script>
     <script src="{{asset('js/app.js')}}"></script>
     <script type="text/javascript">
-       // let miUsuario = "{{Auth::user()->usuario}}"
+        /*Por medio del dom nos apoyamos para obtener las filas de amigos
+        para manipular su estatus en linea*/
         let filaamigochat = document.body.querySelectorAll(".amigoscont");
+        /* metemos en un arreglo a todos los amigos del usuario, esto podria
+        optimizarse a futuro con paginacion para no bajar por ejemplo
+        10,000 amigos de golpe y saturar el server y el front*/
         let arregloNombresAmigos = "<?php
                                     foreach ($contactoschatvar as $fila) {
                                         echo (string)$fila->amigosAQuienesMandeSoli . ",";
                                     }
                                     ?>".split(",");
-        //console.log(arregloNombresAmigos);
         window.Echo.join(`tablon.1234`).here((usuarios) => {
-     //       console.log(usuarios[0], " yo estoy aqui")
+            //console.log(usuarios[0], " yo estoy aqui")
             for (let i = 0; i < usuarios.length; i++) {
-                /*si los usuarios que ya estan en la sala son mis amigos, entran al sig for */
+                //si los usuarios que ya estan en la sala son mis amigos, entran al sig for 
                 if (arregloNombresAmigos.includes(usuarios[i])) {
                     for (let index = 0; index < filaamigochat.length; index++) {
-                        //console.log(filaamigochat[index].firstElementChild.textContent, " for de divs", usuarios[i], " comparador")
-                        /*si el texto de un nodo htmo corresponde con el elemento del for principal, el amigo esta online*/
+                        //si el texto de un nodo htmo corresponde con el elemento del for principal, el amigo esta online
                         if (filaamigochat[index].firstElementChild.textContent === usuarios[i]) {
                             filaamigochat[index].lastElementChild.setAttribute('class', 'online-circle')
                             break;
@@ -124,19 +126,19 @@
                 }
             }
         }).leaving((usuario) => {
-     //       console.log(usuario, " dejando")
+            //       console.log(usuario, " dejando")
             for (let index = 0; index < filaamigochat.length; index++) {
-                console.log(filaamigochat[index].firstElementChild.textContent)
+      //          console.log(filaamigochat[index].firstElementChild.textContent)
                 if (filaamigochat[index].firstElementChild.textContent === usuario) {
                     filaamigochat[index].lastElementChild.setAttribute('class', 'offline-circle')
                     break;
                 }
             }
         }).joining((usuario) => {
-    //        console.log(usuario, " uniendome")
+            //        console.log(usuario, " uniendome")
             if (arregloNombresAmigos.includes(usuario)) {
                 for (let index = 0; index < filaamigochat.length; index++) {
-                    console.log(filaamigochat[index].firstElementChild.textContent)
+     //               console.log(filaamigochat[index].firstElementChild.textContent)
                     if (filaamigochat[index].firstElementChild.textContent === usuario) {
                         filaamigochat[index].lastElementChild.setAttribute('class', 'online-circle')
                         break
@@ -144,7 +146,6 @@
                 }
             }
         })
-
     </script>
 
 </body>

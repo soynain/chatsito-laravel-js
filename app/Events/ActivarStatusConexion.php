@@ -26,7 +26,8 @@ class ActivarStatusConexion implements ShouldBroadcastNow
      */
     public function __construct()
     {
-        
+        /*Consultamos el nombre de usuario propio del usuario
+        que se une al canal, no hacen falta parametros, creo este bloque tambien es inecesario*/
         $this->usuario=DB::select('select * from usuarioscredenciales where usuario=?',[Auth::user()->usuario]);
    //     Log::info(json_encode($this->usuario[0]->usuario)." añeñe");
     }
@@ -39,6 +40,10 @@ class ActivarStatusConexion implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
+        /*aqui solo se declara el nombre del canal porque al no pasar
+        un id real de un socket que en si es global, no se valida
+        y por lo tanto el id que pasamos solo es de identificacion,
+        y con el authorizer retornamos el nombre de usuario a laravel echo*/
         return new PresenceChannel('tablon');
     }
 

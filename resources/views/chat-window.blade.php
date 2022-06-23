@@ -68,10 +68,10 @@
     </div>
     <div class="chat-view-main d-flex flex-column justify-content-between align-items-center">
         <div class="w-100 p-3 destinatario-box d-flex flex-row justify-content-between align-items-center">
-            <span class="d-flex align items-center card-text">{{$mensajesdetalleslista[0]->destinatario}}</span>
+            <span class="d-flex align items-center card-text nombre-usuario">{{$mensajesdetalleslista[0]->destinatario}}</span>
             <div class="d-flex justify-content-between align-items-center">
-                <span class="d-flex justify-content-center align-items-center me-1 card-text">En línea</span>
-                <div class="online-circle"></div>
+                <span class="d-flex justify-content-center align-items-center me-1 card-text status-text">Desconectado</span>
+                <div class="offline-circle"></div>
             </div>
         </div>
         <div class="messages-container w-100 h-100 d-flex flex-column-reverse">
@@ -110,31 +110,48 @@
     </div>
     <script src="{{asset('js/app.js')}}"></script>
     <script>
+        let nombreusuario = document.querySelectorAll('.nombre-usuario')[0];
+        let statustexto = document.querySelectorAll('.status-text')[0];
+        let circlestatus = document.querySelectorAll('.offline-circle')[0];
+        window.Echo.join(`tablon.1234`).here((usuarios) => {
+            for (let i = 0; i < usuarios.length; i++) {
+                //si los usuarios que ya estan en la sala son mis amigos, entran al sig for 
+                if (nombreusuario.textContent == usuarios[i]) {
+                    statustexto.innerText = "En línea";
+                    circlestatus.removeAttribute('class', 'offline-circle');
+                    circlestatus.setAttribute('class', 'online-circle');
+                }
+            }
+        }).leaving((usuario) => {
+            window.Echo.join(`tablon.1234`).leaving((usuario) => {
+                if (usuario == nombreusuario.textContent) {
+                    statustexto.innerText = "Desconectado";
+                    circlestatus.removeAttribute('class', 'online-circle');
+                    circlestatus.setAttribute('class', 'offline-circle');
+                }
+            })
+        }).joining((usuario) => {
+            //        console.log(usuario, " uniendome")
+            if (nombreusuario.textContent == usuario) {
+                statustexto.innerText = "En línea";
+                circlestatus.removeAttribute('class', 'offline-circle');
+                circlestatus.setAttribute('class', 'online-circle');
+            }
+        })
+    </script>
+    <script>
         console.time('benchmarking');
+        /*obtenemos el id de la sala para unirnos a la sala de chat privada
+        entre dos usuarios solamente, asi como tambien obtendremos el boton
+        de enviar mensaje para su listener de enviar, el contenedor para
+        añadirle mas burbujas y el campo de texto para obtener
+        su valor y limpiarlo*/
         let idSala = '{{$mensajesdetalleslista[0]->idConversaciones}}';
         const btnSendMessage = document.getElementsByClassName('send-msg-btn')[0];
         let containerForMessageBubbles = document.getElementsByClassName('scroll-chat')[0];
         let messageContentFromRemitent = document.getElementsByClassName('msg-content')[0];
 
-        async function dispararEvento(msg) {
-            const response = await fetch('/v1/send-message', {
-                method: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': window.axios.defaults.headers.common['X-CSRF-TOKEN'],
-                    'Content-type': 'application/json',
-                    'X-Socket-Id':window.axios.defaults.headers.common['X-Socket-Id']
-                },
-                body: JSON.stringify({
-                    mensaje: msg,
-                    idConversaciones: '{{$mensajesdetalleslista[0]->idConversaciones}}',
-                    idRemitente: '{{Auth::user()->id}}'
-                })
-            })
-            const res = response.json();
-            return res;
-        }
-
-        /*Creando los componentes básicos*/
+        /*Creando los componentes básicos para las burbujas del chat*/
         function getBubbleComponentsArray() {
             let newMsgBubbleForRemitent = document.createElement('div');
             let cardContainerForBubbleMsg = document.createElement('div');
@@ -148,6 +165,7 @@
             };
         }
 
+        /*funcion para crear la burbuja derecha (remitente) */
         function createRightBubbleForRemitent(message) {
             let componentsGeneratedArray = getBubbleComponentsArray();
 
@@ -163,6 +181,7 @@
             containerForMessageBubbles.appendChild(componentsGeneratedArray['newMsgBubbleForRemitent']);
         }
 
+        /*funcion para crear la burbuja izquierda (destinatario) */
         function createLeftBubbleForDestination(message) {
             let componentsGeneratedArray = getBubbleComponentsArray();
 
@@ -178,8 +197,11 @@
             containerForMessageBubbles.appendChild(componentsGeneratedArray['newMsgBubbleForRemitent']);
         }
 
-        window.Echo.private(`ChatListener.${idSala}`).listen('ChatSupervisor', (e) => {
-            console.log(e); //e.mensaje
+        /*Listener para unirnos al canal privado entre dos usuarios que
+        sean amigos, consulte https://github.com/laravel/framework/issues/15466
+        para visualizar de donde pude obtener el Echo.socketId(), ya que no viene
+        predefinido por defecto como lo indica los docs*/
+        const pusher = window.Echo.private(`ChatListener.${idSala}`).listen('ChatSupervisor', (e) => {
             if (e !== null) {
                 createLeftBubbleForDestination(e.mensaje);
                 containerForMessageBubbles.scrollIntoView({
@@ -188,34 +210,59 @@
                 });
             }
         });
-       
-        messageContentFromRemitent.addEventListener('keypress', (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
+
+        /*Parecido a la funcion nativa de js de websockets, usamos el on
+        para que en base al estatus de subscripción, declaremos
+        los listeners y el ajax del chat con el socketId()
+        obtenido.*/
+        pusher.on('pusher:subscription_succeeded', function() {
+            var socket_id = Echo.socketId();
+
+            async function dispararEvento(msg) {
+                const response = await fetch('/v1/send-message', {
+                    method: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': window.axios.defaults.headers.common['X-CSRF-TOKEN'],
+                        'Content-type': 'application/json',
+                        'X-Socket-Id': socket_id
+                    },
+                    body: JSON.stringify({
+                        mensaje: msg,
+                        idConversaciones: '{{$mensajesdetalleslista[0]->idConversaciones}}',
+                        idRemitente: '{{Auth::user()->id}}'
+                    })
+                })
+                const res = response.json();
+                return res;
+            }
+
+            /*Listener para enviar mensajes con enter */
+            messageContentFromRemitent.addEventListener('keypress', (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    dispararEvento(messageContentFromRemitent.value).then((asyncresp) => {
+                        if (asyncresp.response === 'ok') {
+                            createRightBubbleForRemitent(messageContentFromRemitent.value);
+                        } else {
+                            createRightBubbleForRemitent('No se puso enviar su mensaje');
+                        }
+                        messageContentFromRemitent.value = "";
+                    });
+                }
+            });
+
+            /*Listener para enviar mensajes con el boton enviar mensaje*/
+            btnSendMessage.addEventListener('click', () => {
                 dispararEvento(messageContentFromRemitent.value).then((asyncresp) => {
                     if (asyncresp.response === 'ok') {
-                        console.log('neno')
                         createRightBubbleForRemitent(messageContentFromRemitent.value);
                     } else {
                         createRightBubbleForRemitent('No se puso enviar su mensaje');
                     }
                     messageContentFromRemitent.value = "";
                 });
-            }
-        });
-
-        btnSendMessage.addEventListener('click', () => {
-            dispararEvento(messageContentFromRemitent.value).then((asyncresp) => {
-                if (asyncresp.response === 'ok') {
-         //           event.preventDefault();
-                    console.log('nena')
-                    createRightBubbleForRemitent(messageContentFromRemitent.value);
-                } else {
-                    createRightBubbleForRemitent('No se puso enviar su mensaje');
-                }
-                messageContentFromRemitent.value = "";
             });
-        });
+        })
         console.timeEnd('benchmarking');
     </script>
 </body>

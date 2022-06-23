@@ -28,6 +28,9 @@ Broadcast::channel('tablon.{id}', function ($user,$usuario) {
     return $nombreamigo;
 });
 
+/*En un canal privado siempre se debe verificar el id y retornar verdadero,
+el los presence channels se puede retornar datos desde esta sección, y en el
+event declarado en app en broadcastOn también debe ir un idReferido*/
 Broadcast::channel('ChatListener.{idConversacion}', function ($user,$idConversacion) {
     if(count(DB::select('select count(1) from amigosconversaciones where idConversaciones=?;',[$idConversacion]))==1){
   //      Log::info($idConversacion);
