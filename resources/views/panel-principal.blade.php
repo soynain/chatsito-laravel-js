@@ -100,7 +100,7 @@
     <script src="{{asset('js/contact-toggler.js')}}"></script>
     <script src="{{asset('js/app.js')}}"></script>
     <script type="text/javascript">
-        let miUsuario = "{{Auth::user()->usuario}}"
+       // let miUsuario = "{{Auth::user()->usuario}}"
         let filaamigochat = document.body.querySelectorAll(".amigoscont");
         let arregloNombresAmigos = "<?php
                                     foreach ($contactoschatvar as $fila) {

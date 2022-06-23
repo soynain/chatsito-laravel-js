@@ -29,13 +29,11 @@ Broadcast::channel('tablon.{id}', function ($user,$usuario) {
 });
 
 Broadcast::channel('ChatListener.{idConversacion}', function ($user,$idConversacion) {
-    
- /*   if(count(DB::select('select count(1) from amigosconversaciones where idConversaciones=?;',[$idConversacion]))==1){
-        Log::info($idConversacion);
+    if(count(DB::select('select count(1) from amigosconversaciones where idConversaciones=?;',[$idConversacion]))==1){
+  //      Log::info($idConversacion);
         return true;
     }else{
         return false;
-    }*/
-    return true;
+    }
 });
 

@@ -28,7 +28,7 @@ class ActivarStatusConexion implements ShouldBroadcastNow
     {
         
         $this->usuario=DB::select('select * from usuarioscredenciales where usuario=?',[Auth::user()->usuario]);
-        Log::info(json_encode($this->usuario[0]->usuario)." añeñe");
+   //     Log::info(json_encode($this->usuario[0]->usuario)." añeñe");
     }
     
 

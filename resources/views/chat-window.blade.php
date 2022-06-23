@@ -74,7 +74,7 @@
                 <div class="online-circle"></div>
             </div>
         </div>
-        <div class="messages-container w-100 h-100" style="overflow: auto;scroll-snap-align: end;">
+        <div class="messages-container w-100 h-100 d-flex flex-column-reverse">
             <div class="scroll-chat">
                 @foreach($mensajesdetalleslista as $lista)
                 @if($lista->remitente==Auth::user()->usuario)
@@ -95,27 +95,128 @@
                 </div>
                 @endif
                 @endforeach
-
-
             </div>
         </div>
         <div class="d-flex flex-row send-msg-container w-100 card">
             <div class="box-for-button p-2 h-100 d-flex align-items-center">
-                <button class="btn btn-primary h-100 w-100">
+                <button class="btn btn-primary h-100 w-100 send-msg-btn">
                     Enviar mensaje
                 </button>
             </div>
             <div class="container-textarea w-100 h-100 p-2 d-flex align-items-center">
-                <textarea placeholder="Escribe tu mensaje..." style="resize: none;" class="h-100 w-100 form-control"></textarea>
+                <textarea placeholder="Escribe tu mensaje..." style="resize: none;" class="h-100 w-100 form-control msg-content"></textarea>
             </div>
         </div>
     </div>
     <script src="{{asset('js/app.js')}}"></script>
     <script>
-        let idSala='{{$mensajesdetalleslista[0]->idConversaciones}}'
-        window.Echo.private(`ChatListener.${idSala}`).listen('ChatSupervisor',(e)=>{
-            console.log(e);
+        console.time('benchmarking');
+        let idSala = '{{$mensajesdetalleslista[0]->idConversaciones}}';
+        const btnSendMessage = document.getElementsByClassName('send-msg-btn')[0];
+        let containerForMessageBubbles = document.getElementsByClassName('scroll-chat')[0];
+        let messageContentFromRemitent = document.getElementsByClassName('msg-content')[0];
+
+        async function dispararEvento(msg) {
+            const response = await fetch('/v1/send-message', {
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': window.axios.defaults.headers.common['X-CSRF-TOKEN'],
+                    'Content-type': 'application/json',
+                    'X-Socket-Id':window.axios.defaults.headers.common['X-Socket-Id']
+                },
+                body: JSON.stringify({
+                    mensaje: msg,
+                    idConversaciones: '{{$mensajesdetalleslista[0]->idConversaciones}}',
+                    idRemitente: '{{Auth::user()->id}}'
+                })
+            })
+            const res = response.json();
+            return res;
+        }
+
+        /*Creando los componentes básicos*/
+        function getBubbleComponentsArray() {
+            let newMsgBubbleForRemitent = document.createElement('div');
+            let cardContainerForBubbleMsg = document.createElement('div');
+            let cardBodyForBubbleMsg = document.createElement('div');
+            let cardTextForBubbleMsg = document.createElement('p');
+            return {
+                newMsgBubbleForRemitent: newMsgBubbleForRemitent,
+                cardContainerForBubbleMsg: cardContainerForBubbleMsg,
+                cardBodyForBubbleMsg: cardBodyForBubbleMsg,
+                cardTextForBubbleMsg: cardTextForBubbleMsg
+            };
+        }
+
+        function createRightBubbleForRemitent(message) {
+            let componentsGeneratedArray = getBubbleComponentsArray();
+
+            componentsGeneratedArray['cardTextForBubbleMsg'].classList.add('card-text', 'text-white', 'text-wrap', 'text-break');
+            componentsGeneratedArray['cardBodyForBubbleMsg'].classList.add('card-body');
+            componentsGeneratedArray['cardContainerForBubbleMsg'].classList.add('card', 'w-50', 'me-3', 'bubble-style');
+            componentsGeneratedArray['newMsgBubbleForRemitent'].classList.add('d-flex', 'flex-row', 'w-100', 'justify-content-end', 'p-2', 'right-bubble');
+
+            componentsGeneratedArray['cardTextForBubbleMsg'].innerText = message;
+            componentsGeneratedArray['cardBodyForBubbleMsg'].appendChild(componentsGeneratedArray['cardTextForBubbleMsg']);
+            componentsGeneratedArray['cardContainerForBubbleMsg'].appendChild(componentsGeneratedArray['cardBodyForBubbleMsg']);
+            componentsGeneratedArray['newMsgBubbleForRemitent'].appendChild(componentsGeneratedArray['cardContainerForBubbleMsg']);
+            containerForMessageBubbles.appendChild(componentsGeneratedArray['newMsgBubbleForRemitent']);
+        }
+
+        function createLeftBubbleForDestination(message) {
+            let componentsGeneratedArray = getBubbleComponentsArray();
+
+            componentsGeneratedArray['cardTextForBubbleMsg'].classList.add('card-text', 'text-wrap', 'text-break');
+            componentsGeneratedArray['cardBodyForBubbleMsg'].classList.add('card-body');
+            componentsGeneratedArray['cardContainerForBubbleMsg'].classList.add('card', 'w-50', 'ms-3');
+            componentsGeneratedArray['newMsgBubbleForRemitent'].classList.add('d-flex', 'flex-row', 'w-100', 'justify-content-start', 'p-2', 'left-bubble');
+
+            componentsGeneratedArray['cardTextForBubbleMsg'].innerText = message;
+            componentsGeneratedArray['cardBodyForBubbleMsg'].appendChild(componentsGeneratedArray['cardTextForBubbleMsg']);
+            componentsGeneratedArray['cardContainerForBubbleMsg'].appendChild(componentsGeneratedArray['cardBodyForBubbleMsg']);
+            componentsGeneratedArray['newMsgBubbleForRemitent'].appendChild(componentsGeneratedArray['cardContainerForBubbleMsg']);
+            containerForMessageBubbles.appendChild(componentsGeneratedArray['newMsgBubbleForRemitent']);
+        }
+
+        window.Echo.private(`ChatListener.${idSala}`).listen('ChatSupervisor', (e) => {
+            console.log(e); //e.mensaje
+            if (e !== null) {
+                createLeftBubbleForDestination(e.mensaje);
+                containerForMessageBubbles.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end'
+                });
+            }
         });
+       
+        messageContentFromRemitent.addEventListener('keypress', (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                dispararEvento(messageContentFromRemitent.value).then((asyncresp) => {
+                    if (asyncresp.response === 'ok') {
+                        console.log('neno')
+                        createRightBubbleForRemitent(messageContentFromRemitent.value);
+                    } else {
+                        createRightBubbleForRemitent('No se puso enviar su mensaje');
+                    }
+                    messageContentFromRemitent.value = "";
+                });
+            }
+        });
+
+        btnSendMessage.addEventListener('click', () => {
+            dispararEvento(messageContentFromRemitent.value).then((asyncresp) => {
+                if (asyncresp.response === 'ok') {
+         //           event.preventDefault();
+                    console.log('nena')
+                    createRightBubbleForRemitent(messageContentFromRemitent.value);
+                } else {
+                    createRightBubbleForRemitent('No se puso enviar su mensaje');
+                }
+                messageContentFromRemitent.value = "";
+            });
+        });
+        console.timeEnd('benchmarking');
     </script>
 </body>
 

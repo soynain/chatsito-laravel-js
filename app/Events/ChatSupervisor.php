@@ -16,16 +16,17 @@ use Illuminate\Support\Facades\Log;
 class ChatSupervisor implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $mensajeAEmitir;
+    public $salachatid,$mensajeParaDestinatario;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-   public function __construct($salachatid)
+   public function __construct($salachatid,$mensajeParaDestinatario)
     {
         $this->salachatid = DB::select('select idConversaciones from 
         amigosconversaciones where idConversaciones=?;', [$salachatid]);
+        $this->mensajeParaDestinatario=$mensajeParaDestinatario;
    //     Log::info(json_encode($this->salachatid[0]->idConversaciones).'nanana');
     }
 
@@ -40,6 +41,6 @@ class ChatSupervisor implements ShouldBroadcastNow
     }
     public function broadcastWith()
     {
-        return ['mensaje' => 'r1'];
+        return ['mensaje' => $this->mensajeParaDestinatario];
     }
 }

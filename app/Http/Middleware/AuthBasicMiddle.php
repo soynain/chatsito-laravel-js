@@ -24,10 +24,10 @@ class AuthBasicMiddle
         /*otra cosa importante, si ejecutas el server, y no cierras la sesión
         de alguna manera la sesión queda persistida en memoria, debes cerrarla*/
         if(Auth::check()){
-            Log::info('caray el panel funciona');
+       //     Log::info('caray el panel funciona');
             return $next($request);
         }else if(!Auth::check()){
-            Log::info('chale no estoy autenticado, no puedo acceder al panel');
+       //     Log::info('chale no estoy autenticado, no puedo acceder al panel');
             return redirect()->route('login-form');
         }
     }

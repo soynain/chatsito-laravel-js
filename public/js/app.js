@@ -2220,6 +2220,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_2__["default"]({
   forceTLS: false,
   disableStats: true
 });
+console.log(window.Echo.socketId, ' pruebita');
+window.axios.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId();
 
 /***/ }),
 

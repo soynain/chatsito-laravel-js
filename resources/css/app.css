@@ -80,7 +80,9 @@
     height: 18px;
 }
 
-
+.messages-container{
+    overflow-y: auto;
+}
 
 /*media query para XSMALL, boostrap no tiene tag para este*/
 @media (max-width:575px) {

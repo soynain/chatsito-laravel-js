@@ -21,10 +21,10 @@ class LoginFormNoAccessIfAuth
     public function handle(Request $request, Closure $next)
     {
         if(Auth::check()){
-            Log::info('yeah no me dejes entrar al login estando autenticado');
+        //    Log::info('yeah no me dejes entrar al login estando autenticado');
             return redirect()->route('panel-principal');
         }else if(!Auth::check()){
-            Log::info('dali es un pendejo');
+      //      Log::info('dali es un pendejo');
             return $next($request);
         }
     }

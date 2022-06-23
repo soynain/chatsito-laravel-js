@@ -21,9 +21,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
  if (token) {
      window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+
  } else {
      console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
  }
+
 
 import Echo from 'laravel-echo';
 
@@ -39,6 +41,6 @@ window.Echo = new Echo({
     disableStats: true
 });
 
-
-
+console.log(window.Echo.socketId,' pruebita');
+window.axios.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId();
 
