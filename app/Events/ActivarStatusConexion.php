@@ -2,17 +2,13 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
+
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+
 
 class ActivarStatusConexion implements ShouldBroadcastNow
 {
@@ -24,13 +20,7 @@ class ActivarStatusConexion implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct()
-    {
-        /*Consultamos el nombre de usuario propio del usuario
-        que se une al canal, no hacen falta parametros, creo este bloque tambien es inecesario*/
-        $this->usuario=DB::select('select * from usuarioscredenciales where usuario=?',[Auth::user()->usuario]);
-   //     Log::info(json_encode($this->usuario[0]->usuario)." añeñe");
-    }
+   
     
 
     /**

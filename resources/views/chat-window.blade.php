@@ -68,7 +68,13 @@
     </div>
     <div class="chat-view-main d-flex flex-column justify-content-between align-items-center">
         <div class="w-100 p-3 destinatario-box d-flex flex-row justify-content-between align-items-center">
-            <span class="d-flex align items-center card-text nombre-usuario">{{$mensajesdetalleslista[0]->destinatario}}</span>
+            <span class="d-flex align items-center card-text nombre-usuario">
+                @if($mensajesdetalleslista[0]->destinatario===Auth::user()->usuario)
+                {{$mensajesdetalleslista[0]->remitente}}
+                @else
+                {{$mensajesdetalleslista[0]->destinatario}}
+                @endif
+            </span>
             <div class="d-flex justify-content-between align-items-center">
                 <span class="d-flex justify-content-center align-items-center me-1 card-text status-text">Desconectado</span>
                 <div class="offline-circle"></div>
@@ -116,23 +122,29 @@
         window.Echo.join(`tablon.1234`).here((usuarios) => {
             for (let i = 0; i < usuarios.length; i++) {
                 //si los usuarios que ya estan en la sala son mis amigos, entran al sig for 
-                if (nombreusuario.textContent == usuarios[i]) {
+                if (nombreusuario.textContent.trim() === usuarios[i]) {
                     statustexto.innerText = "En línea";
                     circlestatus.removeAttribute('class', 'offline-circle');
                     circlestatus.setAttribute('class', 'online-circle');
                 }
             }
         }).leaving((usuario) => {
-            window.Echo.join(`tablon.1234`).leaving((usuario) => {
-                if (usuario == nombreusuario.textContent) {
-                    statustexto.innerText = "Desconectado";
-                    circlestatus.removeAttribute('class', 'online-circle');
-                    circlestatus.setAttribute('class', 'offline-circle');
-                }
-            })
+            /*Hago una conexión desde el leaving hacia el panel principal
+            para seguir detectando si el usuario sigue en linea, independientemente
+            de si salio o no de la ventana del chat, creo para esto
+            si o si necesito un socket, perooo aun asi tendria
+            que arreglarmelas para seguir detectando la conexión
+            desde otros archivos html*/
+            window.Echo.join(`tablon.1234`)
+                .leaving((usuario) => {
+                    if (usuario === nombreusuario.textContent.trim()) {
+                        statustexto.innerText = "Desconectado";
+                        circlestatus.removeAttribute('class', 'online-circle');
+                        circlestatus.setAttribute('class', 'offline-circle');
+                    }
+                })
         }).joining((usuario) => {
-            //        console.log(usuario, " uniendome")
-            if (nombreusuario.textContent == usuario) {
+            if (nombreusuario.textContent.trim() === usuario) {
                 statustexto.innerText = "En línea";
                 circlestatus.removeAttribute('class', 'offline-circle');
                 circlestatus.setAttribute('class', 'online-circle');
