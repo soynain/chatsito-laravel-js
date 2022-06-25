@@ -1,4 +1,4 @@
-##Laravel Chat Project
+## Laravel Chat Project
 For foreignian speakers, I made a video speaking english to explain this proyect, my speaking
 is very poor but understandable hehe, check it out!! 
 https://www.youtube.com/watch?v=tGy2cGSvE_8
