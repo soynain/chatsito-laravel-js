@@ -24,13 +24,13 @@
                         <a class="nav-link text-white" href="#">Mi perfil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Cerrar sesión</a>
+                        <a class="nav-link text-white" href="{{route('close-session')}}">Cerrar sesión</a>
                     </li>
                     <li class="nav-item d-lg-none d-md-none d-sm-block">
                         <a class="nav-link text-white" href="#">Ver chats</a>
                     </li>
                     <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><img class="notification-icon" src="../images/notification_received.png">
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><img class="notification-icon" src="{{asset('img/notification_received.png')}}">
                         </a>
                     </li>
                 </ul>
@@ -76,7 +76,7 @@
             <div class="card-header d-flex flex-row justify-content-between align-items-center">
                 <h5>Perfil</h5>
                 <a class="d-flex flex-row justify-content-between align-items-center text-white btn btn-success" href="/enviar-solicitud">
-                    <img class="icon-friend-status me-1" src="../images/add-friend.png">
+                    <img class="icon-friend-status me-1" src="{{asset('img/add-friend.png')}}">
                     Enviar solicitud de amistad
                 </a>
             </div>
@@ -86,8 +86,8 @@
                     <div class="row cont-de-datos">
                         <div class="col-sm d-flex flex-column primer-apartado">
                             <div class="mb-3">
-                                <dt class="me-1">Nombre: </dt><span class="text-wrap text-break">Moisés Nain Soto Guzmán
-                                    Magallan</span>
+                                <dt class="me-1">Nombre: </dt><span class="text-wrap text-break">
+                                    @php echo ucwords(strtolower($datosusuario[0]->nombres)." ".strtolower($datosusuario[0]->apellidoPaterno)." ".strtolower($datosusuario[0]->apellidoMaterno)) @endphp.</span>
                             </div>
                             <div class="mb-3">
                                 <dt class="me-1">Edad: </dt><span class="text-wrap text-break">15 años</span>

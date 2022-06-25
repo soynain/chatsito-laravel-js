@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="d-flex flex-row align-items-center navbar-nav navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Mi perfil</a>
+                        <a class="nav-link text-white" href="/v1/profile/{{Auth::user()->usuario}}">Mi perfil</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('close-session')}}">Cerrar sesión</a>
