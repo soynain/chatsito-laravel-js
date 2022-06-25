@@ -1,3 +1,8 @@
+##Laravel Chat Project
+For foreignian speakers, I made a video speaking english to explain this proyect, my speaking
+is very poor but understandable hehe, check it out!! 
+https://www.youtube.com/watch?v=tGy2cGSvE_8
+
 ## Proyecto de chat
 
 Este proyecto de laravel consistirá en un sistema de chat sencillo para comunicar a dos usuarios entre si, no planeo que sea un chat generico de una sala para todos.
